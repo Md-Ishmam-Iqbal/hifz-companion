@@ -135,16 +135,18 @@ function App() {
             <button className="btn">114</button>
           </div>
           {isLoading ? <LoadingSpinner /> : renderAyah()}
-          <h5>
+          <h5 className="functionalities">
             <ul>
               <li>Functionalities</li>
               <ul>
                 <li>
-                  Allow choosing the previous ayah or next ayah and display it
+                  <i>
+                    Only Juz 30 (Surah 78 to 114) set up in Random Ayah
+                    functionality
+                  </i>
                 </li>
                 <li>
-                  Allow hiding and revealing information such as which juz and
-                  page and surah and ayah
+                  <i>Need to add Range editing</i>
                 </li>
               </ul>
             </ul>
