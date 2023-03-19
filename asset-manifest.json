@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/hifz-companion/static/css/main.03a29463.css",
-    "main.js": "/hifz-companion/static/js/main.59708051.js",
+    "main.css": "/hifz-companion/static/css/main.1703174d.css",
+    "main.js": "/hifz-companion/static/js/main.0b4e8404.js",
     "index.html": "/hifz-companion/index.html",
-    "main.03a29463.css.map": "/hifz-companion/static/css/main.03a29463.css.map",
-    "main.59708051.js.map": "/hifz-companion/static/js/main.59708051.js.map"
+    "main.1703174d.css.map": "/hifz-companion/static/css/main.1703174d.css.map",
+    "main.0b4e8404.js.map": "/hifz-companion/static/js/main.0b4e8404.js.map"
   },
   "entrypoints": [
-    "static/css/main.03a29463.css",
-    "static/js/main.59708051.js"
+    "static/css/main.1703174d.css",
+    "static/js/main.0b4e8404.js"
   ]
 }
