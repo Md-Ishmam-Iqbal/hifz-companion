@@ -6,7 +6,6 @@ html {
 
 
 h1 {
-  margin: auto;
   margin-bottom: 30px;
 }
 
@@ -38,19 +37,14 @@ h1 {
   align-items: center;
 }
 
-.cardContainer {
+.containerWrapper {
   display: flex;
-}
-
-.cardBlock {
-  display: flex;
-  justify-content: center;
 }
 
 .card {
   background-color: darkslategray;
-  min-width: calc(65vmin);
-  min-height: calc(20vmin);
+  min-width: calc(40vmin);
+  min-height: calc(10vmin);
   height: auto;
   width: fit-content;
   padding-left: 100px;
@@ -66,17 +60,15 @@ h1 {
   border-style: double;
   border-radius: 25px;
   font-size: 80%;
-  z-index: 99;
 }
 
 .meta-card {
   background-color: rgb(23, 55, 33);
-  text-align: center;
+  max-width: 200px;
+  font-size: 15px;
+  margin: auto;
+  margin-top: 20px;
   border-color: rgb(20, 32, 26);
   border-width: 0.1cm;
   border-style:inset;
-  max-width: 200px;
-  margin: auto;
-  margin-top: 100px;
-  /* content-visibility: hidden; */
 }

@@ -103,12 +103,12 @@ function App() {
 
   const renderAyah = () => {
     return (
-      <div className="cardContainer">
+      <div className="containerWrapper">
         <button className="btn prevBtn" onClick={handlePrevAyah}>
           &#8592; previous ayah
         </button>
         <div className="card">
-          <h1>{randomAyah.text}</h1>
+          <h2>{randomAyah.text}</h2>
           <p className="meta-card">
             {randomAyah.chapter}:{randomAyah.verse}
           </p>
@@ -125,7 +125,7 @@ function App() {
     return (
       <main>
         <header className="App-header">
-          <h1>Hifz Companion</h1>
+          <h2>Hifz Companion</h2>
           <div className="randomButtonContainer">
             <button className="btn" onClick={handleRandomAyah}>
               Random ayah
@@ -134,10 +134,8 @@ function App() {
             <button className="btn">1</button> to
             <button className="btn">114</button>
           </div>
-          <div className="cardBlock">
-            {isLoading ? <LoadingSpinner /> : renderAyah()}
-          </div>
-          <h3>
+          {isLoading ? <LoadingSpinner /> : renderAyah()}
+          <h5>
             <ul>
               <li>Functionalities</li>
               <ul>
@@ -150,7 +148,7 @@ function App() {
                 </li>
               </ul>
             </ul>
-          </h3>
+          </h5>
         </header>
       </main>
     );
