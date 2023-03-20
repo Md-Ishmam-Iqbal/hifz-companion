@@ -33,12 +33,13 @@ h1 {
 
 .randomButtonContainer {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .containerWrapper {
   display: flex;
+  justify-content: center;
 }
 
 .card {
@@ -71,4 +72,8 @@ h1 {
   border-color: rgb(20, 32, 26);
   border-width: 0.1cm;
   border-style:inset;
+}
+
+.functionalities {
+  
 }
