@@ -103,19 +103,13 @@ function App() {
 
   const renderAyah = () => {
     return (
-      <div className="containerWrapper">
-        <button className="btn prevBtn" onClick={handlePrevAyah}>
-          &#8592; previous ayah
-        </button>
+      <div className="mainContentWrapper">
         <div className="card">
           <h2>{randomAyah.text}</h2>
           <p className="meta-card">
             {randomAyah.chapter}:{randomAyah.verse}
           </p>
         </div>
-        <button className="btn nextBtn" onClick={handleNextAyah}>
-          next ayah &#8594;
-        </button>
         <div />
       </div>
     );
@@ -124,15 +118,24 @@ function App() {
   const renderApp = () => {
     return (
       <main>
-        <header className="App-header">
+        <header className="App-wrapper">
           <h2>Hifz Companion</h2>
-          <div className="randomButtonContainer">
+          <div className="randomAyahButtonContainer">
             <button className="btn" onClick={handleRandomAyah}>
               Random ayah
             </button>
             within range
             <button className="btn">1</button> to
             <button className="btn">114</button>
+          </div>
+          <div className="prevNextContainer">
+            <button className="btn prevBtn" onClick={handlePrevAyah}>
+              &#8592; previous ayah
+            </button>
+            <span className="spaceBtwnPrevNext"></span>
+            <button className="btn nextBtn" onClick={handleNextAyah}>
+              next ayah &#8594;
+            </button>
           </div>
           {isLoading ? <LoadingSpinner /> : renderAyah()}
           <h5 className="functionalities">

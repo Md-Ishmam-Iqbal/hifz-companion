@@ -1,12 +1,14 @@
-
-
 html {
   background-color: #282c34;
+  font-size: 16px;
 }
-
 
 h1 {
   margin-bottom: 30px;
+}
+
+.btn {
+  font-size: 60%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -15,12 +17,11 @@ h1 {
   }
 }
 
-.App-header {
+.App-wrapper {
   min-height: 100vh;
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
 
 .App-link {
   color: #61dafb;
@@ -31,15 +32,28 @@ h1 {
   height: fit-content;
 }
 
-.randomButtonContainer {
+.randomAyahButtonContainer {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.containerWrapper {
+
+.prevNextContainer {
   display: flex;
   justify-content: center;
+  width: 100%;
+  margin-top: 4%;
+}
+
+.spaceBtwnPrevNext {
+  width: 80%;
+}
+
+.mainContentWrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .card {
@@ -52,9 +66,8 @@ h1 {
   padding-right: 100px;
   padding-top: 8%;
   padding-bottom: 10%;
-  margin-top: 150px;
-  margin-left: 40px;
-  margin-right: 40px;
+  margin: auto;
+  margin-top: 30px;
   border-color: rgb(0, 0, 0);
   text-align: center;
   border-width: 0.5cm;
@@ -66,7 +79,7 @@ h1 {
 .meta-card {
   background-color: rgb(23, 55, 33);
   max-width: 200px;
-  font-size: 15px;
+  font-size: 80%;
   margin: auto;
   margin-top: 20px;
   border-color: rgb(20, 32, 26);
@@ -74,6 +87,50 @@ h1 {
   border-style:inset;
 }
 
-.functionalities {
-  
+
+
+
+/* THANKS CHATGPT for media queries*/
+
+
+/* Media query for small devices */
+@media screen and (max-width: 576px) {
+
+  /* Adjust font size for small devices */
+  html {
+    font-size: 20px;
+  }
+
+  /* Adjust layout for small devices */
+  body {
+    padding: 10px;
+  }
+}
+
+/* Media query for medium devices */
+@media screen and (min-width: 576px) and (max-width: 768px) {
+
+  /* Adjust font size for medium devices */
+  html {
+    font-size: 15px;
+  }
+
+  /* Adjust layout for medium devices */
+  body {
+    padding: 20px;
+  }
+}
+
+/* Media query for large devices */
+@media screen and (min-width: 768px) {
+
+  /* Adjust font size for large devices */
+  html {
+    font-size: 16px;
+  }
+
+  /* Adjust layout for large devices */
+  body {
+    padding: 30px;
+  }
 }
