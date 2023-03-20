@@ -103,7 +103,7 @@ function App() {
 
   const renderAyah = () => {
     return (
-      <div className="mainContentWrapper">
+      <div>
         <div className="card">
           <h2>{randomAyah.text}</h2>
           <p className="meta-card">
@@ -137,7 +137,9 @@ function App() {
               next ayah &#8594;
             </button>
           </div>
-          {isLoading ? <LoadingSpinner /> : renderAyah()}
+          <div className="mainContentWrapper">
+            {isLoading ? <LoadingSpinner /> : renderAyah()}
+          </div>
           <h5 className="functionalities">
             <ul>
               <li>Functionalities</li>
