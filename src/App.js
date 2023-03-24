@@ -2,6 +2,56 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
 import LoadingSpinner from "./LoadingSpinner";
+import RangeForms from "./components/RangeForms";
+import { Button } from "@mui/material";
+import {
+  grey,
+  cyan,
+  teal,
+  indigo,
+  blue,
+  lightBlue,
+  green,
+  amber,
+  blueGrey,
+  brown,
+  common,
+  deepOrange,
+  deepPurple,
+  lightGreen,
+  lime,
+  orange,
+  pink,
+  purple,
+  red,
+  yellow,
+} from "@mui/material/colors";
+import { ArrowForwardIos } from "@mui/icons-material";
+import { ArrowBackIos } from "@mui/icons-material";
+import { styled } from "@mui/system";
+
+const RandomButton = styled(Button)({
+  backgroundColor: blueGrey[400],
+  fontSize: "60%",
+  padding: "10px",
+  margin: "auto",
+  marginBottom: "2%",
+  borderWidth: "0.2cm",
+  borderColor: "black",
+  "&:hover": {
+    backgroundColor: blueGrey[500],
+  },
+});
+
+const ColorButton = styled(Button)({
+  backgroundColor: blueGrey[400],
+  fontSize: "50%",
+  marginBottom: "2%",
+  borderWidth: "0.2cm",
+  "&:hover": {
+    backgroundColor: blueGrey[400],
+  },
+});
 
 function App() {
   const [fullQuran, setFullQuran] = useState();
@@ -10,8 +60,8 @@ function App() {
     verse: "",
     text: "",
   });
-  const [lowerBound, setlowerBound] = useState();
-  const [upperBound, setupperBound] = useState();
+  // const [lowerBound, setlowerBound] = useState();
+  // const [upperBound, setupperBound] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   const getQuran = () => {
@@ -118,28 +168,45 @@ function App() {
   const renderApp = () => {
     return (
       <main>
-        <header className="App-wrapper">
-          <h2>Hifz Companion</h2>
+        <div className="App-wrapper">
+          <header>Hifz Companion</header>
+          <div className="rangesWrapper">
+            <RangeForms />
+          </div>
           <div className="randomAyahButtonContainer">
-            <button className="btn" onClick={handleRandomAyah}>
+            <RandomButton
+              variant="contained"
+              size="small"
+              onClick={handleRandomAyah}
+            >
               Random ayah
-            </button>
-            within range
-            <button className="btn">1</button> to
-            <button className="btn">114</button>
+            </RandomButton>
           </div>
           <div className="prevNextContainer">
-            <button className="btn prevBtn" onClick={handlePrevAyah}>
-              &#8592; previous ayah
-            </button>
-            <span className="spaceBtwnPrevNext"></span>
-            <button className="btn nextBtn" onClick={handleNextAyah}>
-              next ayah &#8594;
-            </button>
+            <ColorButton
+              variant="contained"
+              size="small"
+              disableElevation
+              onClick={handlePrevAyah}
+            >
+              <ArrowBackIos />
+              previous ayah
+            </ColorButton>
+
+            <ColorButton
+              variant="contained"
+              size="small"
+              disableElevation
+              onClick={handleNextAyah}
+            >
+              next ayah
+              <ArrowForwardIos />
+            </ColorButton>
           </div>
           <div className="mainContentWrapper">
             {isLoading ? <LoadingSpinner /> : renderAyah()}
           </div>
+          <div className="rangeContainer"></div>
           <h5 className="functionalities">
             <ul>
               <li>Functionalities</li>
@@ -156,7 +223,7 @@ function App() {
               </ul>
             </ul>
           </h5>
-        </header>
+        </div>
       </main>
     );
   };
@@ -165,39 +232,5 @@ function App() {
     <main className="App">{isLoading ? <LoadingSpinner /> : renderApp()}</main>
   );
 }
-
-// return (
-//       <div>
-//         <header className="App-header">
-//           <h1>Random Ayah Generator</h1>
-//           <div className="randomButtonContainer">
-//             <button className="btn" onClick={handleRandomAyah}>
-//               Random ayah
-//             </button>
-//             within range
-//             <button className="btn">1</button> to
-//             <button className="btn">114</button>
-//           </div>
-//           <div className="cardBlock">
-//             {isLoading ? <LoadingSpinner /> : renderAyah()}
-//           </div>
-//           <h3>
-//             <ul>
-//               <li>Functionalities</li>
-//               <ul>
-//                 <li>
-//                   Allow choosing the previous ayah or next ayah and display it
-//                 </li>
-//                 <li>
-//                   Allow hiding and revealing information such as which juz and
-//                   page and surah and ayah
-//                 </li>
-//               </ul>
-//             </ul>
-//           </h3>
-//         </header>
-//       </div>
-//     );
-//   };
 
 export default App;
