@@ -210,13 +210,13 @@ function App() {
               <li>Functionalities</li>
               <ul>
                 <li>
-                  <i>
-                    Only Juz 30 (Surah 78 to 114) set up in Random Ayah
-                    functionality
-                  </i>
+                  <i>Range functionality set up</i>
                 </li>
                 <li>
-                  <i>Need to add Range editing</i>
+                  <i>
+                    Need to add reveal answer with surah and ayah number and
+                    name
+                  </i>
                 </li>
               </ul>
             </ul>
