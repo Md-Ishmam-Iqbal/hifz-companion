@@ -38,6 +38,7 @@ const RandomButton = styled(Button)({
   marginBottom: "2%",
   borderWidth: "0.2cm",
   borderColor: "black",
+  color: "darkslategray",
   "&:hover": {
     backgroundColor: blueGrey[500],
   },
@@ -46,10 +47,22 @@ const RandomButton = styled(Button)({
 const ColorButton = styled(Button)({
   backgroundColor: blueGrey[400],
   fontSize: "50%",
+  color: "darkslategray",
   marginBottom: "2%",
   borderWidth: "0.2cm",
   "&:hover": {
     backgroundColor: blueGrey[400],
+  },
+});
+
+const AnswerButton = styled(Button)({
+  backgroundColor: "rgba(91, 115, 128, 0.612)",
+  fontSize: "60%",
+  border: "solid black",
+  color: "aliceblue",
+  margin: "2%",
+  "&:hover": {
+    backgroundColor: blueGrey[600],
   },
 });
 
@@ -151,6 +164,13 @@ function App() {
     }
   };
 
+  const handleRevealAnswer = () => {
+    document.getElementById("answerContainer").style.opacity = `1`;
+  };
+  const handleHideAnswer = () => {
+    document.getElementById("answerContainer").style.opacity = `0`;
+  };
+
   const renderAyah = () => {
     return (
       <div>
@@ -160,7 +180,25 @@ function App() {
             {randomAyah.chapter}:{randomAyah.verse}
           </p>
         </div>
-        <div />
+        <div className="answerWrapper">
+          <AnswerButton
+            variant="contained"
+            size="small"
+            onClick={handleRevealAnswer}
+          >
+            Reveal Answer
+          </AnswerButton>
+          <AnswerButton
+            variant="contained"
+            size="small"
+            onClick={handleHideAnswer}
+          >
+            Hide Answer
+          </AnswerButton>
+          <div id="answerContainer">
+            {randomAyah.chapter}&nbsp;:&nbsp;{randomAyah.verse}
+          </div>
+        </div>
       </div>
     );
   };
@@ -170,7 +208,12 @@ function App() {
       <main>
         <div className="App-wrapper">
           <header>Hifz Companion</header>
-          <div className="rangesWrapper">{render}</div>
+          <div className="rangesContainer">
+            {render}
+            <div className="boundsWrapper">
+              {lowerBound}&nbsp;-&nbsp;{upperBound}
+            </div>
+          </div>
           <div className="randomAyahButtonContainer">
             <RandomButton
               variant="contained"
@@ -222,6 +265,7 @@ function App() {
             </ul>
           </h5>
         </div>
+        <footer></footer>
       </main>
     );
   };
