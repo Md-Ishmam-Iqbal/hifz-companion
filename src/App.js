@@ -60,9 +60,9 @@ function App() {
     verse: "",
     text: "",
   });
-  // const [lowerBound, setlowerBound] = useState();
-  // const [upperBound, setupperBound] = useState();
   const [isLoading, setIsLoading] = useState(true);
+
+  const { lowerBound, upperBound, render } = RangeForms();
 
   const getQuran = () => {
     const fullQuranUrl =
@@ -99,10 +99,10 @@ function App() {
   }, []);
 
   function randomInRange(min, max) {
-    return Math.floor(Math.random() * (max - min) + min);
+    return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  const randomSurah = randomInRange(78, 114); // (lowerbound,upperbound)
+  const randomSurah = randomInRange(lowerBound, upperBound);
 
   const handleRandomAyah = () => {
     const surah = fullQuran.filter((surah) => surah.chapter === randomSurah);
@@ -170,9 +170,7 @@ function App() {
       <main>
         <div className="App-wrapper">
           <header>Hifz Companion</header>
-          <div className="rangesWrapper">
-            <RangeForms />
-          </div>
+          <div className="rangesWrapper">{render}</div>
           <div className="randomAyahButtonContainer">
             <RandomButton
               variant="contained"
