@@ -39,6 +39,7 @@ const RandomButton = styled(Button)({
   borderWidth: "0.2cm",
   borderColor: "black",
   color: "darkslategray",
+  fontFamily: "Poppins",
   "&:hover": {
     backgroundColor: blueGrey[500],
   },
@@ -50,17 +51,19 @@ const ColorButton = styled(Button)({
   color: "darkslategray",
   marginBottom: "2%",
   borderWidth: "0.2cm",
+  fontFamily: "Poppins",
   "&:hover": {
     backgroundColor: blueGrey[400],
   },
 });
 
-const AnswerButton = styled(Button)({
+const RevealButton = styled(Button)({
   backgroundColor: "rgba(91, 115, 128, 0.612)",
   fontSize: "60%",
   border: "solid black",
   color: "aliceblue",
   margin: "2%",
+  fontFamily: "Poppins",
   "&:hover": {
     backgroundColor: blueGrey[600],
   },
@@ -73,42 +76,48 @@ function App() {
     verse: "",
     text: "",
   });
+  const [metaData, setMetaData] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [surahMetaData, setSurahMetaData] = useState({
+    chapter: 90,
+    name: "Al-Balad",
+    englishname: "The City",
+    arabicname: "سُوْرَةُ الْبَلَدِ",
+    revelation: "Mecca",
+    verses: [],
+  });
+  const [toggleAnswerText, setToggleAnswerText] = useState("Reveal Answer");
 
   const { lowerBound, upperBound, render } = RangeForms();
 
-  const getQuran = () => {
-    const fullQuranUrl =
-      "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-quranuthmanihaf1.json";
+  const getData = async () => {
+    setIsLoading(true);
+    const reqFullQuran = axios.get(
+      "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-quranuthmanihaf1.json"
+    );
+    const reqAyah = axios.get(
+      "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-quranuthmanihaf1/90/4.json"
+    );
+    const reqMeta = axios.get(
+      "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/info.json"
+    );
     axios
-      .get(fullQuranUrl)
-      .then((response) => {
-        const d = response.data.quran;
-        setIsLoading(false);
-        setFullQuran(d);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  const getAyah = () => {
-    const url =
-      "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-quranuthmanihaf1/90/4.json";
-    axios
-      .get(url)
-      .then((response) => {
-        const d = response.data;
-        setRandomAyah(d);
-        setIsLoading(false);
-      })
+      .all([reqFullQuran, reqAyah, reqMeta])
+      .then(
+        axios.spread((...responses) => {
+          setFullQuran(responses[0].data.quran);
+          setRandomAyah(responses[1].data);
+          setMetaData(responses[2].data.chapters);
+          setIsLoading(false);
+        })
+      )
       .catch((error) => {
         console.log(error);
       });
   };
 
   useEffect(() => {
-    getQuran();
-    getAyah();
+    getData();
   }, []);
 
   function randomInRange(min, max) {
@@ -118,12 +127,14 @@ function App() {
   const randomSurah = randomInRange(lowerBound, upperBound);
 
   const handleRandomAyah = () => {
+    hideAnswer();
     const surah = fullQuran.filter((surah) => surah.chapter === randomSurah);
     const randomAyah = surah[Math.floor(Math.random() * surah.length)];
     setRandomAyah({ ...randomAyah });
   };
 
   const handlePrevAyah = () => {
+    hideAnswer();
     let currentAyah = randomAyah;
     let currentSurah = fullQuran.filter(
       (surah) => surah.chapter === currentAyah.chapter
@@ -145,6 +156,7 @@ function App() {
   };
 
   const handleNextAyah = () => {
+    hideAnswer();
     let currentAyah = randomAyah;
     let currentSurah = fullQuran.filter(
       (surah) => surah.chapter === currentAyah.chapter
@@ -164,11 +176,29 @@ function App() {
     }
   };
 
-  const handleRevealAnswer = () => {
-    document.getElementById("answerContainer").style.opacity = `1`;
+  const setAnswer = () => {
+    let currentChapter = metaData.find((e) => e.chapter === randomAyah.chapter);
+    setSurahMetaData(currentChapter);
   };
-  const handleHideAnswer = () => {
-    document.getElementById("answerContainer").style.opacity = `0`;
+
+  const revealAnswer = () => {
+    document.getElementById("answerCover").style.opacity = `0`;
+    setToggleAnswerText("Hide answer");
+  };
+
+  const hideAnswer = () => {
+    document.getElementById("answerCover").style.opacity = `1`;
+    setToggleAnswerText("Reveal answer");
+  };
+
+  const handleToggleAnswer = () => {
+    setAnswer();
+    const opacity = document.getElementById("answerCover").style.opacity;
+    if (opacity !== "0") {
+      revealAnswer();
+    } else {
+      hideAnswer();
+    }
   };
 
   const renderAyah = () => {
@@ -179,25 +209,21 @@ function App() {
           <p className="meta-card">
             {randomAyah.chapter}:{randomAyah.verse}
           </p>
+          <p className="answerContainer">
+            <div id="answerCover">Answer</div>
+            <div id="answerWrapper">
+              {`${surahMetaData.name} : ${randomAyah.verse}`}
+            </div>
+          </p>
         </div>
-        <div className="answerWrapper">
-          <AnswerButton
+        <div id="revealBtn">
+          <RevealButton
             variant="contained"
             size="small"
-            onClick={handleRevealAnswer}
+            onClick={handleToggleAnswer}
           >
-            Reveal Answer
-          </AnswerButton>
-          <AnswerButton
-            variant="contained"
-            size="small"
-            onClick={handleHideAnswer}
-          >
-            Hide Answer
-          </AnswerButton>
-          <div id="answerContainer">
-            {randomAyah.chapter}&nbsp;:&nbsp;{randomAyah.verse}
-          </div>
+            {toggleAnswerText}
+          </RevealButton>
         </div>
       </div>
     );

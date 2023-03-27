@@ -41,6 +41,7 @@ const RangeDialogButton = styled(Button)({
   color: "darkslategrey",
   borderColor: "black",
   textShadow: "revert-layer",
+  fontFamily: "Poppins",
   "&:hover": {
     backgroundColor: blueGrey[400],
   },
