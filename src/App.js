@@ -156,7 +156,7 @@ function App() {
   };
 
   const handleNextAyah = () => {
-    hideAnswer();
+    setAnswer();
     let currentAyah = randomAyah;
     let currentSurah = fullQuran.filter(
       (surah) => surah.chapter === currentAyah.chapter
@@ -254,42 +254,39 @@ function App() {
               variant="contained"
               size="small"
               disableElevation
-              onClick={handlePrevAyah}
+              onClick={handleNextAyah}
             >
               <ArrowBackIos />
-              previous ayah
+              next ayah
             </ColorButton>
 
             <ColorButton
               variant="contained"
               size="small"
               disableElevation
-              onClick={handleNextAyah}
+              onClick={handlePrevAyah}
             >
-              next ayah
+              previous ayah
               <ArrowForwardIos />
             </ColorButton>
           </div>
           <div className="mainContentWrapper">
             {isLoading ? <LoadingSpinner /> : renderAyah()}
           </div>
-          <div className="rangeContainer"></div>
-          <h5 className="functionalities">
+          <div>
+            Additional functionalities:
             <ul>
-              <li>Functionalities</li>
-              <ul>
-                <li>
-                  <i>Range functionality set up</i>
-                </li>
-                <li>
-                  <i>
-                    Need to add reveal answer with surah and ayah number and
-                    name
-                  </i>
-                </li>
-              </ul>
+              <li>
+                <i>Add sliding transition for previous and next ayahs</i>
+              </li>
+              <li>
+                <i>Implement material ui into Ayah Card</i>
+              </li>
+              <li>
+                <i>Make material ui color theme</i>
+              </li>
             </ul>
-          </h5>
+          </div>
         </div>
         <footer></footer>
       </main>

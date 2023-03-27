@@ -19,12 +19,6 @@ h1 {
   font-size: 60%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-wrapper {
   min-height: 100vh;
   font-size: calc(10px + 1.5vmin);
@@ -62,7 +56,8 @@ h1 {
   font-size: 65%;
   border-radius: 8%;
   color:aliceblue;
-
+  font-family: "Poppins", sans-serif;
+  
 }
 
 .rangesDialogContainer {
@@ -128,26 +123,27 @@ h1 {
   justify-content: center;
   max-width: 120px;
   margin: auto;
-  margin-top: 4%;
+  margin-top: 6%;
   width: 100px;
 }
 
 #answerWrapper {
   background-color: white;
   color: #282c34;
-  font-size: 75%;
-  width: inherit;
-  height: inherit;
+  font-size: 65%;
+  width: fit-content;
+  max-height: 30px;
+  padding: 1.2px;
   opacity: 1;
+  border: black;
   font-family: "Poppins", sans-serif;
 }
 
 #answerCover {
   background-color: #282c34;
   color: white;
-  font-size: 75%;
+  font-size: 70%;
   width: inherit;
-  padding: 1%;
   opacity: 1;
   position: absolute;
   border: black;
