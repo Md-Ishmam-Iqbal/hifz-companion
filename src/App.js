@@ -183,11 +183,15 @@ function App() {
 
   const revealAnswer = () => {
     document.getElementById("answerCover").style.opacity = `0`;
+    document.getElementById(
+      "answerContainer"
+    ).style.borderColor = `rgb(20, 32, 26)`;
     setToggleAnswerText("Hide answer");
   };
 
   const hideAnswer = () => {
     document.getElementById("answerCover").style.opacity = `1`;
+    document.getElementById("answerContainer").style.borderColor = `aliceblue`;
     setToggleAnswerText("Reveal answer");
   };
 
@@ -209,13 +213,13 @@ function App() {
           <p className="meta-card">
             {randomAyah.chapter}:{randomAyah.verse}
           </p>
-          <p className="answerContainer">
-            <div id="answerCover">Answer</div>
-            <div id="answerWrapper">
-              {`${surahMetaData.name} : ${randomAyah.verse}`}
-            </div>
-          </p>
         </div>
+        <p id="answerContainer">
+          <div id="answerCover">Answer</div>
+          <div id="answerWrapper">
+            {`${surahMetaData.name} : ${randomAyah.verse}`}
+          </div>
+        </p>
         <div id="revealBtn">
           <RevealButton
             variant="contained"
@@ -284,6 +288,9 @@ function App() {
               </li>
               <li>
                 <i>Make material ui color theme</i>
+              </li>
+              <li>
+                <i>Make dropdown set range rather than dialog</i>
               </li>
             </ul>
           </div>
