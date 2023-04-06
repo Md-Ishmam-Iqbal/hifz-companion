@@ -119,23 +119,24 @@ h1 {
 #answerContainer {
   margin: auto;
   margin-top: 2.5%;
-  margin-bottom: 4%;
+  margin-bottom: 2.5%;
   width: 150px;
   position: relative;
-  background-color: darkslategray;
-  border-color: aliceblue;
+  background-color: aliceblue;
+  border-color: rgb(24, 40, 40);
   border-width: 0.1cm;
-  border-style: outset;
+  border-style: inset;
   
 }
 
 #answerWrapper {
-  background-color: darkslategrey;
-  color: aliceblue;
+  background-color: aliceblue;
+  color: darkslategray;
   width: fit-content;
   margin: auto;
-  font-size: 60%;
+  font-size: 62%;
   max-height: 120px;
+  font-weight: 750;
   padding: 1.2px;
   border: black;
   font-family: "Poppins", sans-serif;
@@ -146,20 +147,20 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: aliceblue;
-  color: darkslategrey;
+  background-color: darkslategray;
+  color: aliceblue;
   width: 100%;
   font-size: 70%;
-  font-weight: 800;
+  font-weight: 600;
   opacity: 1;
   font-family: "Poppins", sans-serif;
   position: absolute;
+  border: solid darkslategray;
 }
 
 #revealBtn {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
 }
 
 /* THANKS CHATGPT for the media queries*/

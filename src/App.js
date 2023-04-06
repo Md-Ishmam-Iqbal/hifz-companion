@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
 import axios from "axios";
 import LoadingSpinner from "./LoadingSpinner";
 import RangeForms from "./components/RangeForms";
-import { Button } from "@mui/material";
+import {
+  Button,
+  BottomNavigation,
+  BottomNavigationAction,
+  Box,
+} from "@mui/material";
 import {
   grey,
   cyan,
@@ -26,9 +30,10 @@ import {
   red,
   yellow,
 } from "@mui/material/colors";
-import { ArrowForwardIos } from "@mui/icons-material";
-import { ArrowBackIos } from "@mui/icons-material";
+import { ArrowForwardIos, ArrowBackIos } from "@mui/icons-material";
 import { styled } from "@mui/system";
+
+import "./App.css";
 
 const RandomButton = styled(Button)({
   backgroundColor: blueGrey[400],
@@ -87,6 +92,7 @@ function App() {
     verses: [],
   });
   const [toggleAnswerText, setToggleAnswerText] = useState("Reveal Answer");
+  // const [bottomNavValue, setBottomNavValue] = useState(0);
 
   const { lowerBound, upperBound, render } = RangeForms();
 
@@ -183,15 +189,17 @@ function App() {
 
   const revealAnswer = () => {
     document.getElementById("answerCover").style.opacity = `0`;
-    document.getElementById(
-      "answerContainer"
-    ).style.borderColor = `rgb(20, 32, 26)`;
+    document.getElementById("answerContainer").style.borderColor = `aliceblue`;
+    document.getElementById("answerContainer").style.borderStyle = `outset`;
     setToggleAnswerText("Hide answer");
   };
 
   const hideAnswer = () => {
     document.getElementById("answerCover").style.opacity = `1`;
-    document.getElementById("answerContainer").style.borderColor = `aliceblue`;
+    document.getElementById(
+      "answerContainer"
+    ).style.borderColor = `rgb(24, 40, 40)`;
+    document.getElementById("answerContainer").style.borderStyle = `inset`;
     setToggleAnswerText("Reveal answer");
   };
 
@@ -233,76 +241,91 @@ function App() {
     );
   };
 
-  const renderApp = () => {
-    return (
-      <main>
-        <div className="App-wrapper">
-          <header>Hifz Companion</header>
-          <div className="rangesContainer">
-            {render}
-            <div className="boundsWrapper">
-              {lowerBound}&nbsp;-&nbsp;{upperBound}
-            </div>
-          </div>
-          <div className="randomAyahButtonContainer">
-            <RandomButton
-              variant="contained"
-              size="small"
-              onClick={handleRandomAyah}
-            >
-              Random ayah
-            </RandomButton>
-          </div>
-          <div className="prevNextContainer">
-            <ColorButton
-              variant="contained"
-              size="small"
-              disableElevation
-              onClick={handleNextAyah}
-            >
-              <ArrowBackIos />
-              next ayah
-            </ColorButton>
-
-            <ColorButton
-              variant="contained"
-              size="small"
-              disableElevation
-              onClick={handlePrevAyah}
-            >
-              previous ayah
-              <ArrowForwardIos />
-            </ColorButton>
-          </div>
-          <div className="mainContentWrapper">
-            {isLoading ? <LoadingSpinner /> : renderAyah()}
-          </div>
-          <div>
-            Additional functionalities:
-            <ul>
-              <li>
-                <i>Add sliding transition for previous and next ayahs</i>
-              </li>
-              <li>
-                <i>Implement material ui into Ayah Card</i>
-              </li>
-              <li>
-                <i>Make material ui color theme</i>
-              </li>
-              <li>
-                <i>Make dropdown set range rather than dialog</i>
-              </li>
-            </ul>
+  // const renderApp = () => {
+  return (
+    <main>
+      <div className="App-wrapper">
+        <header>Hifz Companion</header>
+        <div className="rangesContainer">
+          {render}
+          <div className="boundsWrapper">
+            {lowerBound}&nbsp;-&nbsp;{upperBound}
           </div>
         </div>
-        <footer></footer>
-      </main>
-    );
-  };
+        <div className="randomAyahButtonContainer">
+          <RandomButton
+            variant="contained"
+            size="small"
+            onClick={handleRandomAyah}
+          >
+            Random ayah
+          </RandomButton>
+        </div>
+        <div className="prevNextContainer">
+          <ColorButton
+            variant="contained"
+            size="small"
+            disableElevation
+            onClick={handleNextAyah}
+          >
+            <ArrowBackIos />
+            next ayah
+          </ColorButton>
 
-  return (
-    <main className="App">{isLoading ? <LoadingSpinner /> : renderApp()}</main>
+          <ColorButton
+            variant="contained"
+            size="small"
+            disableElevation
+            onClick={handlePrevAyah}
+          >
+            previous ayah
+            <ArrowForwardIos />
+          </ColorButton>
+        </div>
+        <div className="mainContentWrapper">
+          {isLoading ? <LoadingSpinner /> : renderAyah()}
+        </div>
+        <div>
+          Additional functionalities:
+          <ul>
+            <li>
+              <i>Add sliding transition for previous and next ayahs</i>
+            </li>
+            <li>
+              <i>Implement material ui into Ayah Card</i>
+            </li>
+            <li>
+              <i>Make material ui color theme</i>
+            </li>
+            <li>
+              <i>Make dropdown set range rather than dialog</i>
+            </li>
+          </ul>
+        </div>
+      </div>
+      {/* <Box sx={{ width: 800 }}>
+        <BottomNavigation
+          showLabels
+          value={bottomNavValue}
+          onChange={(event, newValue) => {
+            setBottomNavValue(newValue);
+          }}
+        >
+          <BottomNavigationAction label="Next Ayah" icon={<ArrowBackIos />} />
+          <BottomNavigationAction label="RandomAyah" />
+          <BottomNavigationAction
+            label="Previous Ayah"
+            icon={<ArrowForwardIos />}
+          />
+        </BottomNavigation>
+      </Box> */}
+    </main>
   );
 }
+
+// return (
+//   <main className="App">{isLoading ? <LoadingSpinner /> : renderApp()}</main>
+// );
+// }
 
 export default App;
