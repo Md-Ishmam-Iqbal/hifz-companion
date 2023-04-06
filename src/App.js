@@ -68,6 +68,7 @@ const RevealButton = styled(Button)({
   border: "solid black",
   color: "aliceblue",
   margin: "2%",
+  width: "30%",
   fontFamily: "Poppins",
   "&:hover": {
     backgroundColor: blueGrey[600],
@@ -99,10 +100,10 @@ function App() {
   const getData = async () => {
     setIsLoading(true);
     const reqFullQuran = axios.get(
-      "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-quranuthmanihaf1.json"
+      "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-qurandoorinonun.json"
     );
     const reqAyah = axios.get(
-      "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-quranuthmanihaf1/90/4.json"
+      "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-qurandoorinonun/90/4.json"
     );
     const reqMeta = axios.get(
       "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/info.json"
