@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import LoadingSpinner from "./LoadingSpinner";
-import RangeForms from "./components/RangeForms";
+import SelectRange from "./components/SelectRange";
 import {
   Button,
   BottomNavigation,
@@ -82,7 +82,6 @@ function App() {
     verse: "",
     text: "",
   });
-  const [metaData, setMetaData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [surahMetaData, setSurahMetaData] = useState({
     chapter: 90,
@@ -92,10 +91,11 @@ function App() {
     revelation: "Mecca",
     verses: [],
   });
+  const [answer, setAnswer] = useState("");
   const [toggleAnswerText, setToggleAnswerText] = useState("Reveal Answer");
   // const [bottomNavValue, setBottomNavValue] = useState(0);
 
-  const { lowerBound, upperBound, render } = RangeForms();
+  const { metaData, lowerBound, upperBound, render } = SelectRange();
 
   const getData = async () => {
     setIsLoading(true);
@@ -105,16 +105,13 @@ function App() {
     const reqAyah = axios.get(
       "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-qurandoorinonun/90/4.json"
     );
-    const reqMeta = axios.get(
-      "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/info.json"
-    );
+
     axios
-      .all([reqFullQuran, reqAyah, reqMeta])
+      .all([reqFullQuran, reqAyah])
       .then(
         axios.spread((...responses) => {
           setFullQuran(responses[0].data.quran);
           setRandomAyah(responses[1].data);
-          setMetaData(responses[2].data.chapters);
           setIsLoading(false);
         })
       )
@@ -141,7 +138,7 @@ function App() {
   };
 
   const handlePrevAyah = () => {
-    hideAnswer();
+    displayAnswer();
     let currentAyah = randomAyah;
     let currentSurah = fullQuran.filter(
       (surah) => surah.chapter === currentAyah.chapter
@@ -163,7 +160,7 @@ function App() {
   };
 
   const handleNextAyah = () => {
-    setAnswer();
+    displayAnswer();
     let currentAyah = randomAyah;
     let currentSurah = fullQuran.filter(
       (surah) => surah.chapter === currentAyah.chapter
@@ -183,9 +180,12 @@ function App() {
     }
   };
 
-  const setAnswer = () => {
-    let currentChapter = metaData.find((e) => e.chapter === randomAyah.chapter);
+  const displayAnswer = () => {
+    let currentChapter = metaData.chapters.find(
+      (e) => e.chapter === randomAyah.chapter
+    );
     setSurahMetaData(currentChapter);
+    setAnswer(`${currentChapter.name}:${randomAyah.verse}`);
   };
 
   const revealAnswer = () => {
@@ -205,7 +205,7 @@ function App() {
   };
 
   const handleToggleAnswer = () => {
-    setAnswer();
+    displayAnswer();
     const opacity = document.getElementById("answerCover").style.opacity;
     if (opacity !== "0") {
       revealAnswer();
@@ -223,12 +223,12 @@ function App() {
             {randomAyah.chapter}:{randomAyah.verse}
           </p>
         </div>
-        <p id="answerContainer">
+        <div id="answerContainer">
           <div id="answerCover">Answer</div>
           <div id="answerWrapper">
             {`${surahMetaData.name} : ${randomAyah.verse}`}
           </div>
-        </p>
+        </div>
         <div id="revealBtn">
           <RevealButton
             variant="contained"
@@ -247,7 +247,7 @@ function App() {
     <main>
       <div className="App-wrapper">
         <header>Hifz Companion</header>
-        <div className="rangesContainer">
+        <div className="selectContainer">
           {render}
           <div className="boundsWrapper">
             {lowerBound}&nbsp;-&nbsp;{upperBound}
@@ -290,43 +290,28 @@ function App() {
           Additional functionalities:
           <ul>
             <li>
-              <i>Add sliding transition for previous and next ayahs</i>
+              <i>Implement selecting surahs and ayahs, not just surahs</i>
+            </li>
+            <li>
+              <i>
+                Working only for juz 28, 29 and 30 as only chapters are chosen.
+                Need to implement selecting specific ayahs
+              </i>
             </li>
             <li>
               <i>Implement material ui into Ayah Card</i>
             </li>
             <li>
-              <i>Make material ui color theme</i>
-            </li>
-            <li>
-              <i>Make dropdown set range rather than dialog</i>
+              <i>
+                Fix displayAnswer bug for traversing among surahs when clicking
+                on next and prev ayah
+              </i>
             </li>
           </ul>
         </div>
       </div>
-      {/* <Box sx={{ width: 800 }}>
-        <BottomNavigation
-          showLabels
-          value={bottomNavValue}
-          onChange={(event, newValue) => {
-            setBottomNavValue(newValue);
-          }}
-        >
-          <BottomNavigationAction label="Next Ayah" icon={<ArrowBackIos />} />
-          <BottomNavigationAction label="RandomAyah" />
-          <BottomNavigationAction
-            label="Previous Ayah"
-            icon={<ArrowForwardIos />}
-          />
-        </BottomNavigation>
-      </Box> */}
     </main>
   );
 }
-
-// return (
-//   <main className="App">{isLoading ? <LoadingSpinner /> : renderApp()}</main>
-// );
-// }
 
 export default App;

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Button,
   Dialog,
@@ -53,11 +54,33 @@ const LowerBound = styled(FormControl)({
 const UpperBound = styled(FormControl)({
   width: "8%",
 });
+const SelectJuz = styled(FormControl)({
+  width: "50%",
+});
 
-function RangeForms() {
+function SelectRange() {
   const [open, setOpen] = useState(false);
   const [lowerBound, setLowerBound] = useState(78);
   const [upperBound, setUpperBound] = useState(114);
+  const [juz, setJuz] = useState(30);
+  const [metaData, setMetaData] = useState();
+
+  const getMetaData = async () => {
+    const reqMeta =
+      "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/info.json";
+    axios
+      .get(reqMeta)
+      .then((response) => {
+        setMetaData(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    getMetaData();
+  }, []);
 
   const handleLowerBound = (event) => {
     setLowerBound(event.target.value);
@@ -65,6 +88,20 @@ function RangeForms() {
 
   const handleUpperBound = (event) => {
     setUpperBound(event.target.value);
+  };
+
+  const handleSelectJuz = (event) => {
+    const juzs = metaData.juzs.references;
+    console.log(juzs);
+    let juzObject = juzs.filter((juzz) => {
+      return juzz.juz === event.target.value;
+    })[0];
+    let juzSelected = juzObject.juz;
+    let juzStartChapter = juzObject.start.chapter;
+    let juzEndChapter = juzObject.end.chapter;
+    setLowerBound(juzStartChapter);
+    setUpperBound(juzEndChapter);
+    setJuz(juzSelected);
   };
 
   const handleClickOpen = () => {
@@ -78,8 +115,10 @@ function RangeForms() {
   };
 
   return {
+    metaData,
     lowerBound,
     upperBound,
+    juz,
     render: (
       <div className="rangesDialogContainer">
         <RangeDialogButton
@@ -87,7 +126,7 @@ function RangeForms() {
           size="large"
           onClick={handleClickOpen}
         >
-          Set Range
+          Select Range
         </RangeDialogButton>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>Choose start range and end range</DialogTitle>
@@ -368,6 +407,65 @@ function RangeForms() {
                 </Select>
               </UpperBound>
             </Box>
+            <Box
+              minWidth={30}
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: "5%",
+              }}
+            >
+              <SelectJuz sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="input-label">Select Juz</InputLabel>
+                <Select
+                  value={juz}
+                  label="SelectJuz"
+                  onChange={handleSelectJuz}
+                  MenuProps={{
+                    style: {
+                      maxHeight: 300,
+                    },
+                  }}
+                >
+                  {/*
+            Emmet shortcut to generate 1 to 114 
+            MenuItem[value={$@1}]{$@1}*114
+             */}
+                  <MenuItem value={1}>1</MenuItem>
+                  <MenuItem value={2}>2</MenuItem>
+                  <MenuItem value={3}>3</MenuItem>
+                  <MenuItem value={4}>4</MenuItem>
+                  <MenuItem value={5}>5</MenuItem>
+                  <MenuItem value={6}>6</MenuItem>
+                  <MenuItem value={7}>7</MenuItem>
+                  <MenuItem value={8}>8</MenuItem>
+                  <MenuItem value={9}>9</MenuItem>
+                  <MenuItem value={10}>10</MenuItem>
+                  <MenuItem value={11}>11</MenuItem>
+                  <MenuItem value={12}>12</MenuItem>
+                  <MenuItem value={13}>13</MenuItem>
+                  <MenuItem value={14}>14</MenuItem>
+                  <MenuItem value={15}>15</MenuItem>
+                  <MenuItem value={16}>16</MenuItem>
+                  <MenuItem value={17}>17</MenuItem>
+                  <MenuItem value={18}>18</MenuItem>
+                  <MenuItem value={19}>19</MenuItem>
+                  <MenuItem value={20}>20</MenuItem>
+                  <MenuItem value={21}>21</MenuItem>
+                  <MenuItem value={22}>22</MenuItem>
+                  <MenuItem value={23}>23</MenuItem>
+                  <MenuItem value={24}>24</MenuItem>
+                  <MenuItem value={25}>25</MenuItem>
+                  <MenuItem value={26}>26</MenuItem>
+                  <MenuItem value={27}>27</MenuItem>
+                  <MenuItem value={28}>28</MenuItem>
+                  <MenuItem value={29}>29</MenuItem>
+                  <MenuItem value={30}>30</MenuItem>
+                </Select>
+              </SelectJuz>
+            </Box>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
@@ -379,4 +477,4 @@ function RangeForms() {
   };
 }
 
-export default RangeForms;
+export default SelectRange;
