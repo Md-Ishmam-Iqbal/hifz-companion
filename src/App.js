@@ -286,29 +286,6 @@ function App() {
         <div className="mainContentWrapper">
           {isLoading ? <LoadingSpinner /> : renderAyah()}
         </div>
-        <div>
-          Additional functionalities:
-          <ul>
-            <li>
-              <i>Implement selecting surahs and ayahs, not just surahs</i>
-            </li>
-            <li>
-              <i>
-                Working only for juz 28, 29 and 30 as only chapters are chosen.
-                Need to implement selecting specific ayahs
-              </i>
-            </li>
-            <li>
-              <i>Implement material ui into Ayah Card</i>
-            </li>
-            <li>
-              <i>
-                Fix displayAnswer bug for traversing among surahs when clicking
-                on next and prev ayah
-              </i>
-            </li>
-          </ul>
-        </div>
       </div>
     </main>
   );
