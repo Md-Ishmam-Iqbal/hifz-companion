@@ -65,6 +65,7 @@ function SelectRange() {
   const [juz, setJuz] = useState(30);
   const [metaData, setMetaData] = useState();
   const [chapters, setChapters] = useState();
+  const [juzs, setJuzs] = useState();
 
   const getMetaData = async () => {
     const reqMeta =
@@ -74,6 +75,7 @@ function SelectRange() {
       .then((response) => {
         setChapters(response.data.chapters);
         setMetaData(response.data);
+        setJuzs(response.data.juzs.references);
       })
       .catch((error) => {
         console.log(error);
@@ -93,9 +95,8 @@ function SelectRange() {
   };
 
   const handleSelectJuz = (event) => {
-    const juzs = metaData.juzs.references;
-    let juzObject = juzs.filter((juzz) => {
-      return juzz.juz === event.target.value;
+    let juzObject = juzs.filter((juz) => {
+      return juz.juz === event.target.value;
     })[0];
     let juzSelected = juzObject.juz;
     let juzStartChapter = juzObject.start.chapter;
@@ -209,40 +210,14 @@ function SelectRange() {
                     },
                   }}
                 >
-                  {/*
-            Emmet shortcut to generate 1 to 114 
-            MenuItem[value={$@1}]{$@1}*114
-             */}
-                  <MenuItem value={1}>1</MenuItem>
-                  <MenuItem value={2}>2</MenuItem>
-                  <MenuItem value={3}>3</MenuItem>
-                  <MenuItem value={4}>4</MenuItem>
-                  <MenuItem value={5}>5</MenuItem>
-                  <MenuItem value={6}>6</MenuItem>
-                  <MenuItem value={7}>7</MenuItem>
-                  <MenuItem value={8}>8</MenuItem>
-                  <MenuItem value={9}>9</MenuItem>
-                  <MenuItem value={10}>10</MenuItem>
-                  <MenuItem value={11}>11</MenuItem>
-                  <MenuItem value={12}>12</MenuItem>
-                  <MenuItem value={13}>13</MenuItem>
-                  <MenuItem value={14}>14</MenuItem>
-                  <MenuItem value={15}>15</MenuItem>
-                  <MenuItem value={16}>16</MenuItem>
-                  <MenuItem value={17}>17</MenuItem>
-                  <MenuItem value={18}>18</MenuItem>
-                  <MenuItem value={19}>19</MenuItem>
-                  <MenuItem value={20}>20</MenuItem>
-                  <MenuItem value={21}>21</MenuItem>
-                  <MenuItem value={22}>22</MenuItem>
-                  <MenuItem value={23}>23</MenuItem>
-                  <MenuItem value={24}>24</MenuItem>
-                  <MenuItem value={25}>25</MenuItem>
-                  <MenuItem value={26}>26</MenuItem>
-                  <MenuItem value={27}>27</MenuItem>
-                  <MenuItem value={28}>28</MenuItem>
-                  <MenuItem value={29}>29</MenuItem>
-                  <MenuItem value={30}>30</MenuItem>
+                  {juzs &&
+                    juzs.map((juz) => {
+                      return (
+                        <MenuItem key={juz.juz} value={juz.juz}>
+                          {juz.juz}
+                        </MenuItem>
+                      );
+                    })}
                 </Select>
               </SelectJuz>
             </Box>
