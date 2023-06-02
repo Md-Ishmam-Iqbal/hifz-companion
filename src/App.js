@@ -22,7 +22,7 @@ const RandomButton = styled(Button)({
   marginBottom: "2%",
   borderWidth: "0.2cm",
   borderColor: "black",
-  color: "darkslategray",
+  color: "white",
   fontFamily: "Poppins",
   "&:hover": {
     backgroundColor: blueGrey[500],
@@ -32,8 +32,8 @@ const RandomButton = styled(Button)({
 const ColorButton = styled(Button)({
   backgroundColor: blueGrey[400],
   fontSize: "50%",
-  color: "darkslategray",
-  marginBottom: "2%",
+  width: "20%",
+  color: "white",
   borderWidth: "0.2cm",
   fontFamily: "Poppins",
   "&:hover": {
@@ -105,6 +105,14 @@ function App() {
   function randomInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
+
+  const handleIsLoading = () => {
+    if (isLoading) {
+      console.log("loading");
+    } else {
+      console.log("loaded");
+    }
+  };
 
   const randomSurah = randomInRange(startRange, endRange);
 
@@ -248,7 +256,9 @@ function App() {
             <ArrowBackIos />
             next ayah
           </ColorButton>
-
+          <div className={`${isLoading ? "" : "hidden"}`}>
+            <LoadingSpinner />
+          </div>
           <ColorButton
             variant="contained"
             size="small"
@@ -260,7 +270,7 @@ function App() {
           </ColorButton>
         </div>
         <div className="mainContentWrapper">
-          {isLoading ? <LoadingSpinner /> : renderAyah()}
+          {isLoading ? "" : renderAyah()}
         </div>
       </div>
     </main>

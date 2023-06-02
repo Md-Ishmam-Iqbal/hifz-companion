@@ -21,7 +21,7 @@ import { Box, Select } from "@mui/material";
 const RangeDialogButton = styled(Button)({
   backgroundColor: blueGrey[300],
   fontSize: "80%",
-  color: "darkslategrey",
+  color: "white",
   borderColor: "black",
   textShadow: "revert-layer",
   fontFamily: "Poppins",
@@ -189,9 +189,13 @@ function SelectRange() {
                     value={ayahNumber}
                     label="AyahList"
                     onChange={handleSelectAyah}
+                    MenuProps={{
+                      style: {
+                        maxHeight: 175,
+                      },
+                    }}
                     // disabled={ayahList.length === 0}
                   >
-                    <MenuItem key="" value=""></MenuItem>
                     {startRangeAyahList.map((ayah) => {
                       return (
                         <MenuItem key={ayah.verse} value={ayah.verse}>
@@ -234,9 +238,13 @@ function SelectRange() {
                     value={ayahNumber}
                     label="AyahList"
                     onChange={handleSelectAyah}
+                    MenuProps={{
+                      style: {
+                        maxHeight: 175,
+                      },
+                    }}
                     // disabled={ayahList.length === 0}
                   >
-                    <MenuItem key="" value=""></MenuItem>
                     {endRangeAyahList.map((ayah) => {
                       return (
                         <MenuItem key={ayah.verse} value={ayah.verse}>
