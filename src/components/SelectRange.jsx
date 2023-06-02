@@ -84,11 +84,23 @@ function SelectRange() {
   }, [startRange, endRange]);
 
   const handleStartRange = (event) => {
-    setStartRange(event.target.value);
+    const value = event.target.value;
+    if (value > endRange) {
+      // do nothing
+      return;
+    } else {
+      setStartRange(value);
+    }
   };
 
   const handleEndRange = (event) => {
-    setEndRange(event.target.value);
+    const value = event.target.value;
+    if (startRange > value) {
+      // do nothing
+      return;
+    } else {
+      setEndRange(value);
+    }
   };
 
   const handleSelectAyah = (event) => {
