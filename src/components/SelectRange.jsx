@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+
+// MUI imports start
+import { styled } from "@mui/system";
 import {
   Button,
   Dialog,
@@ -10,32 +13,11 @@ import {
   InputLabel,
   MenuItem,
 } from "@mui/material";
-import {
-  grey,
-  cyan,
-  teal,
-  indigo,
-  blue,
-  lightBlue,
-  green,
-  amber,
-  blueGrey,
-  brown,
-  common,
-  deepOrange,
-  deepPurple,
-  lightGreen,
-  lime,
-  orange,
-  pink,
-  purple,
-  red,
-  yellow,
-} from "@mui/material/colors";
-import Box from "@mui/material/Box";
-import Select from "@mui/material/Select";
-import { styled } from "@mui/system";
+import { blueGrey } from "@mui/material/colors";
+import { Box, Select } from "@mui/material";
+// MUI imports end
 
+// MUI styles start
 const RangeDialogButton = styled(Button)({
   backgroundColor: blueGrey[300],
   fontSize: "80%",
@@ -48,24 +30,28 @@ const RangeDialogButton = styled(Button)({
   },
 });
 
-const LowerBound = styled(FormControl)({
+const Bounds = styled(FormControl)({
   width: "8%",
 });
-const UpperBound = styled(FormControl)({
-  width: "8%",
+const SelectAyah = styled(FormControl)({
+  width: "90%",
 });
 const SelectJuz = styled(FormControl)({
   width: "50%",
 });
+// MUI styles end
 
 function SelectRange() {
   const [open, setOpen] = useState(false);
-  const [lowerBound, setLowerBound] = useState(78);
-  const [upperBound, setUpperBound] = useState(114);
+  const [startRange, setStartRange] = useState(78);
+  const [endRange, setEndRange] = useState(114);
   const [juz, setJuz] = useState(30);
   const [metaData, setMetaData] = useState();
-  const [chapters, setChapters] = useState();
+  const [chapters, setChapters] = useState([]);
   const [juzs, setJuzs] = useState();
+  const [startRangeAyahList, setStartRangeAyahList] = useState([]);
+  const [endRangeAyahList, setEndRangeAyahList] = useState([]);
+  const [ayahNumber, setAyahNumber] = useState("");
 
   const getMetaData = async () => {
     const reqMeta =
@@ -86,12 +72,27 @@ function SelectRange() {
     getMetaData();
   }, []);
 
-  const handleLowerBound = (event) => {
-    setLowerBound(event.target.value);
+  useEffect(() => {
+    const link =
+      "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/info.json";
+
+    axios.get(link).then((response) => {
+      let chapters = response.data.chapters;
+      setStartRangeAyahList(chapters[startRange - 1].verses);
+      setEndRangeAyahList(chapters[endRange - 1].verses);
+    });
+  }, [startRange, endRange]);
+
+  const handleStartRange = (event) => {
+    setStartRange(event.target.value);
   };
 
-  const handleUpperBound = (event) => {
-    setUpperBound(event.target.value);
+  const handleEndRange = (event) => {
+    setEndRange(event.target.value);
+  };
+
+  const handleSelectAyah = (event) => {
+    console.log(event.target.value);
   };
 
   const handleSelectJuz = (event) => {
@@ -101,8 +102,8 @@ function SelectRange() {
     let juzSelected = juzObject.juz;
     let juzStartChapter = juzObject.start.chapter;
     let juzEndChapter = juzObject.end.chapter;
-    setLowerBound(juzStartChapter);
-    setUpperBound(juzEndChapter);
+    setStartRange(juzStartChapter);
+    setEndRange(juzEndChapter);
     setJuz(juzSelected);
   };
 
@@ -110,16 +111,16 @@ function SelectRange() {
     setOpen(true);
   };
 
-  var handleClose = function (event, reason) {
-    if (reason !== "backdropClick") {
+  const handleClose = function (event) {
+    if (event !== "backdropClick") {
       setOpen(false);
     }
   };
 
   return {
     metaData,
-    lowerBound,
-    upperBound,
+    startRange,
+    endRange,
     juz,
     render: (
       <div className="rangesDialogContainer">
@@ -142,51 +143,98 @@ function SelectRange() {
                 justifyContent: "center",
               }}
             >
-              <LowerBound sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="input-label">Start Range</InputLabel>
+              <Bounds sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="input-label-start-range">
+                  Start Range
+                </InputLabel>
                 <Select
-                  value={lowerBound}
-                  label="LowerBound"
-                  onChange={handleLowerBound}
+                  value={startRange}
+                  label="StartRange"
+                  onChange={handleStartRange}
                   MenuProps={{
                     style: {
                       maxHeight: 300,
                     },
                   }}
                 >
-                  {chapters &&
-                    chapters.map((chapter) => {
+                  {chapters.map((chapter) => {
+                    return (
+                      <MenuItem key={chapter.chapter} value={chapter.chapter}>
+                        {chapter.chapter}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+                <SelectAyah sx={{ m: 1 }} variant="filled">
+                  <InputLabel
+                    id="input-label-start-range-ayah"
+                    variant="filled"
+                    sx={{ fontSize: "10px" }}
+                  >
+                    Select Ayah
+                  </InputLabel>
+                  <Select
+                    value={ayahNumber}
+                    label="AyahList"
+                    onChange={handleSelectAyah}
+                    // disabled={ayahList.length === 0}
+                  >
+                    <MenuItem key="" value=""></MenuItem>
+                    {startRangeAyahList.map((ayah) => {
                       return (
-                        <MenuItem key={chapter.chapter} value={chapter.chapter}>
-                          {chapter.chapter}
+                        <MenuItem key={ayah.verse} value={ayah.verse}>
+                          {ayah.verse}
                         </MenuItem>
                       );
                     })}
-                </Select>
-              </LowerBound>
-
-              <UpperBound sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="input-label">End Range</InputLabel>
+                  </Select>
+                </SelectAyah>
+              </Bounds>
+              <Bounds sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="input-label-end-range">End Range</InputLabel>
                 <Select
-                  value={upperBound}
-                  label="UpperBound"
-                  onChange={handleUpperBound}
+                  value={endRange}
+                  label="EndRange"
+                  onChange={handleEndRange}
                   MenuProps={{
                     style: {
                       maxHeight: 300,
                     },
                   }}
                 >
-                  {chapters &&
-                    chapters.map((chapter) => {
+                  {chapters.map((chapter) => {
+                    return (
+                      <MenuItem key={chapter.chapter} value={chapter.chapter}>
+                        {chapter.chapter}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+                <SelectAyah sx={{ m: 1 }} variant="filled">
+                  <InputLabel
+                    id="input-label-end-range-ayah"
+                    variant="filled"
+                    sx={{ fontSize: "10px" }}
+                  >
+                    Select Ayah
+                  </InputLabel>
+                  <Select
+                    value={ayahNumber}
+                    label="AyahList"
+                    onChange={handleSelectAyah}
+                    // disabled={ayahList.length === 0}
+                  >
+                    <MenuItem key="" value=""></MenuItem>
+                    {endRangeAyahList.map((ayah) => {
                       return (
-                        <MenuItem key={chapter.chapter} value={chapter.chapter}>
-                          {chapter.chapter}
+                        <MenuItem key={ayah.verse} value={ayah.verse}>
+                          {ayah.verse}
                         </MenuItem>
                       );
                     })}
-                </Select>
-              </UpperBound>
+                  </Select>
+                </SelectAyah>
+              </Bounds>
             </Box>
             <Box
               minWidth={30}

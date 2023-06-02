@@ -1,40 +1,19 @@
 import React, { useState, useEffect } from "react";
+
 import axios from "axios";
-import LoadingSpinner from "./LoadingSpinner";
-import SelectRange from "./components/SelectRange";
-import {
-  Button,
-  BottomNavigation,
-  BottomNavigationAction,
-  Box,
-} from "@mui/material";
-import {
-  grey,
-  cyan,
-  teal,
-  indigo,
-  blue,
-  lightBlue,
-  green,
-  amber,
-  blueGrey,
-  brown,
-  common,
-  deepOrange,
-  deepPurple,
-  lightGreen,
-  lime,
-  orange,
-  pink,
-  purple,
-  red,
-  yellow,
-} from "@mui/material/colors";
-import { ArrowForwardIos, ArrowBackIos } from "@mui/icons-material";
-import { styled } from "@mui/system";
 
 import "./App.css";
+import LoadingSpinner from "./LoadingSpinner";
+import SelectRange from "./components/SelectRange";
 
+// MUI imports start
+import { styled } from "@mui/system";
+import { blueGrey } from "@mui/material/colors";
+import { Button } from "@mui/material";
+import { ArrowForwardIos, ArrowBackIos } from "@mui/icons-material";
+// MUI imports end
+
+// MUI styles start
 const RandomButton = styled(Button)({
   backgroundColor: blueGrey[400],
   fontSize: "60%",
@@ -74,6 +53,7 @@ const RevealButton = styled(Button)({
     backgroundColor: blueGrey[600],
   },
 });
+// MUI styles end
 
 function App() {
   const [fullQuran, setFullQuran] = useState();
@@ -91,18 +71,16 @@ function App() {
     revelation: "Mecca",
     verses: [],
   });
-  const [answer, setAnswer] = useState("");
   const [toggleAnswerText, setToggleAnswerText] = useState("Reveal Answer");
-  // const [bottomNavValue, setBottomNavValue] = useState(0);
 
-  const { metaData, lowerBound, upperBound, render } = SelectRange();
+  const { metaData, startRange, endRange, render } = SelectRange();
 
   const getData = async () => {
     setIsLoading(true);
-    const reqFullQuran = axios.get(
+    const reqFullQuran = await axios.get(
       "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-qurandoorinonun.json"
     );
-    const reqAyah = axios.get(
+    const reqAyah = await axios.get(
       "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-qurandoorinonun/90/4.json"
     );
 
@@ -128,7 +106,7 @@ function App() {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  const randomSurah = randomInRange(lowerBound, upperBound);
+  const randomSurah = randomInRange(startRange, endRange);
 
   const handleRandomAyah = () => {
     hideAnswer();
@@ -185,7 +163,6 @@ function App() {
       (e) => e.chapter === randomAyah.chapter
     );
     setSurahMetaData(currentChapter);
-    setAnswer(`${currentChapter.name}:${randomAyah.verse}`);
   };
 
   const revealAnswer = () => {
@@ -242,7 +219,6 @@ function App() {
     );
   };
 
-  // const renderApp = () => {
   return (
     <main>
       <div className="App-wrapper">
@@ -250,7 +226,7 @@ function App() {
         <div className="selectContainer">
           {render}
           <div className="boundsWrapper">
-            {lowerBound}&nbsp;-&nbsp;{upperBound}
+            {startRange}&nbsp;-&nbsp;{endRange}
           </div>
         </div>
         <div className="randomAyahButtonContainer">
