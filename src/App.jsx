@@ -6,6 +6,9 @@ import "./App.css";
 import LoadingSpinner from "./components/LoadingSpinner";
 import SelectRange from "./components/SelectRange";
 
+import { useQuery } from "@tanstack/react-query";
+import fetchQuran from "./functions/fetchQuran";
+
 // MUI imports start
 import { styled } from "@mui/system";
 import { blueGrey } from "@mui/material/colors";
@@ -58,7 +61,6 @@ const RevealButton = styled(Button)({
 // MUI styles end
 
 function App() {
-  const [fullQuran, setFullQuran] = useState();
   const [randomAyah, setRandomAyah] = useState({
     chapter: "",
     verse: "",
@@ -80,22 +82,16 @@ function App() {
 
   const getData = async () => {
     setIsLoading(true);
-    const reqFullQuran = await axios.get(
-      "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-qurandoorinonun.json"
-    );
-    const reqAyah = await axios.get(
-      "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-qurandoorinonun/90/4.json"
-    );
+    const ayahLink =
+      "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-qurandoorinonun/90/4.json";
 
     axios
-      .all([reqFullQuran, reqAyah])
-      .then(
-        axios.spread((...responses) => {
-          setFullQuran(responses[0].data.quran);
-          setRandomAyah(responses[1].data);
-          setIsLoading(false);
-        })
-      )
+      .get(ayahLink)
+      .then((response) => {
+        console.log(response.data);
+        setRandomAyah(response.data);
+        setIsLoading(false);
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -104,6 +100,18 @@ function App() {
   useEffect(() => {
     getData();
   }, []);
+
+  const quranResults = useQuery(["quran"], fetchQuran);
+
+  if (quranResults.isLoading) {
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  const fullQuran = quranResults.data.quran;
 
   function randomInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
