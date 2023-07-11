@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 html {
   background-color: #282c34;
   font-size: 16px;
@@ -75,7 +79,7 @@ h1 {
 
 .prevNextContainer {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: 10px;
   width: 100%;
 }
@@ -88,34 +92,23 @@ h1 {
 
 .card {
   background-color: darkslategray;
-  min-width: calc(40vmin);
-  min-height: calc(15vmin);
-  height: auto;
+  min-width: calc(80vmin);
+  max-width: calc(120vmin);
   width: fit-content;
-  padding: 70px;
-  padding-top: 8%;
-  padding-bottom: 10%;
-  margin: auto;
-  margin-top: 30px;
   border-color: rgb(0, 0, 0);
   border-width: 0.25cm;
   border-style: double;
   border-radius: 25px;
   text-align: center;
-  font-size: 100%;
+  font-size: 80%;
   font-family: "Poppins", sans-serif;
+  padding: 3% 0 0 0;
+  margin-top: 5%;
 }
 
-.meta-card {
-  background-color: rgb(23, 55, 33);
-  max-width: 120px;
-  font-size: 80%;
-  margin: auto;
-  margin-top: 20px;
-  border-color: rgb(20, 32, 26);
-  border-width: 0.1cm;
-  border-style:inset;
-  font-family: "Poppins", sans-serif;
+.card h2 {
+  margin: 4% 9% 4% 9%;
+  padding: 0;
 }
 
 #answerContainer {
@@ -165,7 +158,9 @@ h1 {
   justify-content: center;
 }
 
-/* THANKS CHATGPT for the media queries*/
+.hidden {
+  visibility: hidden;
+}
 
 
 /* Media query for small devices */

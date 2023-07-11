@@ -43,15 +43,16 @@ const SelectJuz = styled(FormControl)({
 
 function SelectRange() {
   const [open, setOpen] = useState(false);
-  const [startRange, setStartRange] = useState(78);
-  const [endRange, setEndRange] = useState(114);
+  const [startRangeChapter, setStartRangeChapter] = useState(78);
+  const [endRangeChapter, setEndRangeChapter] = useState(114);
   const [juz, setJuz] = useState(30);
   const [metaData, setMetaData] = useState();
   const [chapters, setChapters] = useState([]);
   const [juzs, setJuzs] = useState();
   const [startRangeAyahList, setStartRangeAyahList] = useState([]);
   const [endRangeAyahList, setEndRangeAyahList] = useState([]);
-  const [ayahNumber, setAyahNumber] = useState("");
+  const [startRangeAyah, setStartRangeAyah] = useState("");
+  const [endRangeAyah, setEndRangeAyah] = useState("");
 
   const getMetaData = async () => {
     const reqMeta =
@@ -78,33 +79,36 @@ function SelectRange() {
 
     axios.get(link).then((response) => {
       let chapters = response.data.chapters;
-      setStartRangeAyahList(chapters[startRange - 1].verses);
-      setEndRangeAyahList(chapters[endRange - 1].verses);
+      setStartRangeAyahList(chapters[startRangeChapter - 1].verses);
+      setEndRangeAyahList(chapters[endRangeChapter - 1].verses);
     });
-  }, [startRange, endRange]);
+  }, [startRangeChapter, endRangeChapter]);
 
-  const handleStartRange = (event) => {
+  const handleStartRangeChapter = (event) => {
     const value = event.target.value;
-    if (value > endRange) {
+    if (value > endRangeChapter) {
       // do nothing
       return;
     } else {
-      setStartRange(value);
+      setStartRangeChapter(value);
     }
   };
 
-  const handleEndRange = (event) => {
+  const handleEndRangeChapter = (event) => {
     const value = event.target.value;
-    if (startRange > value) {
+    if (startRangeChapter > value) {
       // do nothing
       return;
     } else {
-      setEndRange(value);
+      setEndRangeChapter(value);
     }
   };
 
-  const handleSelectAyah = (event) => {
-    console.log(event.target.value);
+  const handleSelectStartRangeAyah = (event) => {
+    setStartRangeAyah(event.target.value);
+  };
+  const handleSelectEndRangeAyah = (event) => {
+    setEndRangeAyah(event.target.value);
   };
 
   const handleSelectJuz = (event) => {
@@ -114,8 +118,8 @@ function SelectRange() {
     let juzSelected = juzObject.juz;
     let juzStartChapter = juzObject.start.chapter;
     let juzEndChapter = juzObject.end.chapter;
-    setStartRange(juzStartChapter);
-    setEndRange(juzEndChapter);
+    setStartRangeChapter(juzStartChapter);
+    setEndRangeChapter(juzEndChapter);
     setJuz(juzSelected);
   };
 
@@ -131,8 +135,8 @@ function SelectRange() {
 
   return {
     metaData,
-    startRange,
-    endRange,
+    startRangeChapter,
+    endRangeChapter,
     juz,
     render: (
       <div className="rangesDialogContainer">
@@ -160,9 +164,9 @@ function SelectRange() {
                   Start Range
                 </InputLabel>
                 <Select
-                  value={startRange}
-                  label="StartRange"
-                  onChange={handleStartRange}
+                  value={startRangeChapter}
+                  label="StartRangeChapter"
+                  onChange={handleStartRangeChapter}
                   MenuProps={{
                     style: {
                       maxHeight: 300,
@@ -186,9 +190,9 @@ function SelectRange() {
                     Select Ayah
                   </InputLabel>
                   <Select
-                    value={ayahNumber}
+                    value={startRangeAyah}
                     label="AyahList"
-                    onChange={handleSelectAyah}
+                    onChange={handleSelectStartRangeAyah}
                     MenuProps={{
                       style: {
                         maxHeight: 175,
@@ -209,9 +213,9 @@ function SelectRange() {
               <Bounds sx={{ m: 1, minWidth: 120 }}>
                 <InputLabel id="input-label-end-range">End Range</InputLabel>
                 <Select
-                  value={endRange}
-                  label="EndRange"
-                  onChange={handleEndRange}
+                  value={endRangeChapter}
+                  label="EndRangeChapter"
+                  onChange={handleEndRangeChapter}
                   MenuProps={{
                     style: {
                       maxHeight: 300,
@@ -235,9 +239,9 @@ function SelectRange() {
                     Select Ayah
                   </InputLabel>
                   <Select
-                    value={ayahNumber}
+                    value={endRangeAyah}
                     label="AyahList"
-                    onChange={handleSelectAyah}
+                    onChange={handleSelectEndRangeAyah}
                     MenuProps={{
                       style: {
                         maxHeight: 175,

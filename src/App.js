@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import "./App.css";
-import LoadingSpinner from "./LoadingSpinner";
+import LoadingSpinner from "./components/LoadingSpinner";
 import SelectRange from "./components/SelectRange";
 
 // MUI imports start
@@ -34,10 +34,12 @@ const ColorButton = styled(Button)({
   fontSize: "50%",
   width: "20%",
   color: "white",
+  margin: " 0 10% 0 10%",
+  top: "10px",
   borderWidth: "0.2cm",
   fontFamily: "Poppins",
   "&:hover": {
-    backgroundColor: blueGrey[400],
+    backgroundColor: blueGrey[600],
   },
 });
 
@@ -73,7 +75,8 @@ function App() {
   });
   const [toggleAnswerText, setToggleAnswerText] = useState("Reveal Answer");
 
-  const { metaData, startRange, endRange, render } = SelectRange();
+  const { metaData, startRangeChapter, endRangeChapter, render } =
+    SelectRange();
 
   const getData = async () => {
     setIsLoading(true);
@@ -106,15 +109,7 @@ function App() {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  const handleIsLoading = () => {
-    if (isLoading) {
-      console.log("loading");
-    } else {
-      console.log("loaded");
-    }
-  };
-
-  const randomSurah = randomInRange(startRange, endRange);
+  const randomSurah = randomInRange(startRangeChapter, endRangeChapter);
 
   const handleRandomAyah = () => {
     hideAnswer();
@@ -205,7 +200,7 @@ function App() {
         <div className="card">
           <h2>{randomAyah.text}</h2>
           <p className="meta-card">
-            {randomAyah.chapter}:{randomAyah.verse}
+            ({randomAyah.chapter}:{randomAyah.verse})
           </p>
         </div>
         <div id="answerContainer">
@@ -234,7 +229,7 @@ function App() {
         <div className="selectContainer">
           {render}
           <div className="boundsWrapper">
-            {startRange}&nbsp;-&nbsp;{endRange}
+            {startRangeChapter}&nbsp;-&nbsp;{endRangeChapter}
           </div>
         </div>
         <div className="randomAyahButtonContainer">
