@@ -12,8 +12,9 @@ import fetchQuran from "./functions/fetchQuran";
 // MUI imports start
 import { styled } from "@mui/system";
 import { blueGrey } from "@mui/material/colors";
-import { Button } from "@mui/material";
+import { Button, Select } from "@mui/material";
 import { ArrowForwardIos, ArrowBackIos } from "@mui/icons-material";
+import fetchMetadata from "./functions/fetchMetadata";
 // MUI imports end
 
 // MUI styles start
@@ -77,7 +78,24 @@ function App() {
   });
   const [toggleAnswerText, setToggleAnswerText] = useState("Reveal Answer");
 
-  const { metaData, startRange, endRange, render } = SelectRange();
+  const [startRange, setStartRange] = useState({
+    chapter: 78,
+    verse: 1,
+  });
+  const [endRange, setEndRange] = useState({
+    chapter: 114,
+    verse: 6,
+  });
+
+  const updateStartRange = (startRange) => {
+    setStartRange(startRange);
+  };
+
+  const updateEndRange = (endRange) => {
+    setEndRange(endRange);
+  };
+
+  const randomSurah = randomInRange(startRange.chapter, endRange.chapter);
 
   const getData = async () => {
     setIsLoading(true);
@@ -99,9 +117,10 @@ function App() {
     getData();
   }, []);
 
+  const metadataResults = useQuery(["metadata"], fetchMetadata);
   const quranResults = useQuery(["quran"], fetchQuran);
 
-  if (quranResults.isLoading) {
+  if (quranResults.isLoading || metadataResults.isLoading) {
     return (
       <div>
         <LoadingSpinner />
@@ -109,13 +128,12 @@ function App() {
     );
   }
 
+  const metaData = metadataResults.data;
   const fullQuran = quranResults.data.quran;
 
   function randomInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
-
-  const randomSurah = randomInRange(startRange.chapter, endRange.chapter);
 
   const handleRandomAyah = () => {
     hideAnswer();
@@ -233,7 +251,13 @@ function App() {
       <div className="app-wrapper">
         <header>Hifz Companion</header>
         <div className="selectContainer">
-          {render}
+          <SelectRange
+            metadata={metaData}
+            startRange={startRange}
+            endRange={endRange}
+            updateStartRange={updateStartRange}
+            updateEndRange={updateEndRange}
+          />
           <div className="boundsWrapper">
             {`${startRange.chapter}:${startRange.verse}`}&nbsp;-&nbsp;
             {`${endRange.chapter}:${endRange.verse}`}
