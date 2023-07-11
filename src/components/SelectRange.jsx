@@ -15,9 +15,6 @@ import {
 } from "@mui/material";
 import { blueGrey } from "@mui/material/colors";
 import { Box, Select } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
-import fetchMetadata from "../functions/fetchMetadata";
-import LoadingSpinner from "./LoadingSpinner";
 // MUI imports end
 
 // MUI styles start

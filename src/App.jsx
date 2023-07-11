@@ -12,7 +12,7 @@ import fetchQuran from "./functions/fetchQuran";
 // MUI imports start
 import { styled } from "@mui/system";
 import { blueGrey } from "@mui/material/colors";
-import { Button, Select } from "@mui/material";
+import { Button } from "@mui/material";
 import { ArrowForwardIos, ArrowBackIos } from "@mui/icons-material";
 import fetchMetadata from "./functions/fetchMetadata";
 // MUI imports end
@@ -95,8 +95,6 @@ function App() {
     setEndRange(endRange);
   };
 
-  const randomSurah = randomInRange(startRange.chapter, endRange.chapter);
-
   const getData = async () => {
     setIsLoading(true);
     const ayahLink =
@@ -137,8 +135,15 @@ function App() {
 
   const handleRandomAyah = () => {
     hideAnswer();
-    const surah = fullQuran.filter((surah) => surah.chapter === randomSurah);
-    const randomAyah = surah[Math.floor(Math.random() * surah.length)];
+    const startChapterIndex = fullQuran.findIndex(
+      (obj) =>
+        obj.chapter === startRange.chapter && obj.verse === startRange.verse
+    );
+    const endChapterIndex = fullQuran.findIndex(
+      (obj) => obj.chapter === endRange.chapter && obj.verse === endRange.verse
+    );
+    const randomAyahIndex = randomInRange(startChapterIndex, endChapterIndex);
+    const randomAyah = fullQuran[randomAyahIndex];
     setRandomAyah({ ...randomAyah });
   };
 
