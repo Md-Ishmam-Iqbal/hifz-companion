@@ -15,6 +15,9 @@ import {
 } from "@mui/material";
 import { blueGrey } from "@mui/material/colors";
 import { Box, Select } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import fetchMetadata from "../functions/fetchMetadata";
+import LoadingSpinner from "./LoadingSpinner";
 // MUI imports end
 
 // MUI styles start
@@ -43,35 +46,42 @@ const SelectJuz = styled(FormControl)({
 
 function SelectRange() {
   const [open, setOpen] = useState(false);
-  const [startRangeChapter, setStartRangeChapter] = useState(78);
-  const [endRangeChapter, setEndRangeChapter] = useState(114);
-  const [juz, setJuz] = useState(30);
-  const [metaData, setMetaData] = useState();
-  const [chapters, setChapters] = useState([]);
-  const [juzs, setJuzs] = useState();
+
+  const [startRange, setStartRange] = useState({
+    chapter: 78,
+    verse: 1,
+  });
+  const [endRange, setEndRange] = useState({
+    chapter: 114,
+    verse: 6,
+  });
+
   const [startRangeAyahList, setStartRangeAyahList] = useState([]);
   const [endRangeAyahList, setEndRangeAyahList] = useState([]);
-  const [startRangeAyah, setStartRangeAyah] = useState("");
-  const [endRangeAyah, setEndRangeAyah] = useState("");
 
-  const getMetaData = async () => {
-    const reqMeta =
-      "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/info.json";
-    axios
-      .get(reqMeta)
-      .then((response) => {
-        setChapters(response.data.chapters);
-        setMetaData(response.data);
-        setJuzs(response.data.juzs.references);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  const [juz, setJuz] = useState(30);
+  // const [metaData, setMetaData] = useState();
+  // const [chapters, setChapters] = useState([]);
+  // const [juzs, setJuzs] = useState();
 
-  useEffect(() => {
-    getMetaData();
-  }, []);
+  // const getMetaData = async () => {
+  //   const reqMeta =
+  //     "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/info.json";
+  //   axios
+  //     .get(reqMeta)
+  //     .then((response) => {
+  //       setChapters(response.data.chapters);
+  //       setMetaData(response.data);
+  //       setJuzs(response.data.juzs.references);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getMetaData();
+  // }, []);
 
   useEffect(() => {
     const link =
@@ -79,36 +89,52 @@ function SelectRange() {
 
     axios.get(link).then((response) => {
       let chapters = response.data.chapters;
-      setStartRangeAyahList(chapters[startRangeChapter - 1].verses);
-      setEndRangeAyahList(chapters[endRangeChapter - 1].verses);
+      const startRangeChapterIndex = startRange.chapter - 1;
+      const endRangeChapterIndex = endRange.chapter - 1;
+      setStartRangeAyahList(chapters[startRangeChapterIndex].verses);
+      setEndRangeAyahList(chapters[endRangeChapterIndex].verses);
     });
-  }, [startRangeChapter, endRangeChapter]);
+  }, [startRange.chapter, endRange.chapter]);
+
+  const metadataResults = useQuery(["quran"], fetchMetadata);
+
+  if (metadataResults.isLoading) {
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  const chapters = metadataResults.data.chapters;
+  const metaData = metadataResults.data;
+  const juzs = metadataResults.data.juzs.references;
 
   const handleStartRangeChapter = (event) => {
     const value = event.target.value;
-    if (value > endRangeChapter) {
-      // do nothing
+    if (value > endRange.chapter) {
+      alert("Select a value lesser than end range");
       return;
     } else {
-      setStartRangeChapter(value);
+      setStartRange({ chapter: value, verse: 1 });
     }
   };
 
   const handleEndRangeChapter = (event) => {
     const value = event.target.value;
-    if (startRangeChapter > value) {
-      // do nothing
+    if (startRange.chapter > value) {
+      alert("Select a value greater than start range");
       return;
     } else {
-      setEndRangeChapter(value);
+      setEndRange({ chapter: value, verse: 1 });
     }
   };
 
   const handleSelectStartRangeAyah = (event) => {
-    setStartRangeAyah(event.target.value);
+    setStartRange({ ...startRange, verse: event.target.value });
   };
   const handleSelectEndRangeAyah = (event) => {
-    setEndRangeAyah(event.target.value);
+    setEndRange({ ...endRange, verse: event.target.value });
   };
 
   const handleSelectJuz = (event) => {
@@ -116,12 +142,12 @@ function SelectRange() {
       return juz.juz === event.target.value;
     })[0];
     let juzSelected = juzObject.juz;
-    let juzStartChapter = juzObject.start.chapter;
-    let juzEndChapter = juzObject.end.chapter;
-    setStartRangeChapter(juzStartChapter);
-    setEndRangeChapter(juzEndChapter);
+    setStartRange(juzObject.start);
+    setEndRange(juzObject.end);
     setJuz(juzSelected);
   };
+
+  console.log(startRange, endRange);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -135,8 +161,8 @@ function SelectRange() {
 
   return {
     metaData,
-    startRangeChapter,
-    endRangeChapter,
+    startRange,
+    endRange,
     juz,
     render: (
       <div className="rangesDialogContainer">
@@ -164,7 +190,7 @@ function SelectRange() {
                   Start Range
                 </InputLabel>
                 <Select
-                  value={startRangeChapter}
+                  value={startRange.chapter}
                   label="StartRangeChapter"
                   onChange={handleStartRangeChapter}
                   MenuProps={{
@@ -190,7 +216,7 @@ function SelectRange() {
                     Select Ayah
                   </InputLabel>
                   <Select
-                    value={startRangeAyah}
+                    value={startRange.verse}
                     label="AyahList"
                     onChange={handleSelectStartRangeAyah}
                     MenuProps={{
@@ -213,7 +239,7 @@ function SelectRange() {
               <Bounds sx={{ m: 1, minWidth: 120 }}>
                 <InputLabel id="input-label-end-range">End Range</InputLabel>
                 <Select
-                  value={endRangeChapter}
+                  value={endRange.chapter}
                   label="EndRangeChapter"
                   onChange={handleEndRangeChapter}
                   MenuProps={{
@@ -239,7 +265,7 @@ function SelectRange() {
                     Select Ayah
                   </InputLabel>
                   <Select
-                    value={endRangeAyah}
+                    value={endRange.verse}
                     label="AyahList"
                     onChange={handleSelectEndRangeAyah}
                     MenuProps={{

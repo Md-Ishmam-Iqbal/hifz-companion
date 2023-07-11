@@ -77,8 +77,7 @@ function App() {
   });
   const [toggleAnswerText, setToggleAnswerText] = useState("Reveal Answer");
 
-  const { metaData, startRangeChapter, endRangeChapter, render } =
-    SelectRange();
+  const { metaData, startRange, endRange, render } = SelectRange();
 
   const getData = async () => {
     setIsLoading(true);
@@ -88,7 +87,6 @@ function App() {
     axios
       .get(ayahLink)
       .then((response) => {
-        console.log(response.data);
         setRandomAyah(response.data);
         setIsLoading(false);
       })
@@ -117,7 +115,7 @@ function App() {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  const randomSurah = randomInRange(startRangeChapter, endRangeChapter);
+  const randomSurah = randomInRange(startRange.chapter, endRange.chapter);
 
   const handleRandomAyah = () => {
     hideAnswer();
@@ -232,12 +230,13 @@ function App() {
 
   return (
     <main>
-      <div className="App-wrapper">
+      <div className="app-wrapper">
         <header>Hifz Companion</header>
         <div className="selectContainer">
           {render}
           <div className="boundsWrapper">
-            {startRangeChapter}&nbsp;-&nbsp;{endRangeChapter}
+            {`${startRange.chapter}:${startRange.verse}`}&nbsp;-&nbsp;
+            {`${endRange.chapter}:${endRange.verse}`}
           </div>
         </div>
         <div className="randomAyahButtonContainer">
