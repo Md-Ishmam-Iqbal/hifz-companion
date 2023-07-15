@@ -88,7 +88,7 @@ h1 {
   width: 100%;
 }
 
-.mainContentWrapper {
+.main-content-wrapper {
   display: flex;
   align-items: center;
   flex-direction: column;

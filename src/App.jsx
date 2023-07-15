@@ -120,7 +120,7 @@ function App() {
 
   if (quranResults.isLoading || metadataResults.isLoading) {
     return (
-      <div>
+      <div className="main-content-wrapper">
         <LoadingSpinner />
       </div>
     );
@@ -216,11 +216,7 @@ function App() {
   const handleToggleAnswer = () => {
     displayAnswer();
     const opacity = document.getElementById("answerCover").style.opacity;
-    if (opacity !== "0") {
-      revealAnswer();
-    } else {
-      hideAnswer();
-    }
+    opacity !== "0" ? revealAnswer() : hideAnswer();
   };
 
   const renderAyah = () => {
@@ -300,7 +296,7 @@ function App() {
             <ArrowForwardIos />
           </ColorButton>
         </div>
-        <div className="mainContentWrapper">
+        <div className="main-content-wrapper">
           {isLoading ? "" : renderAyah()}
         </div>
       </div>

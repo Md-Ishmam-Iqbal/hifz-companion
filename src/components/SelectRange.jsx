@@ -49,43 +49,20 @@ function SelectRange({
   updateEndRange,
 }) {
   const [open, setOpen] = useState(false);
+  const [showStartAyahs, setShowStartAyahs] = useState(false);
+  const [showEndAyahs, setShowEndAyahs] = useState(false);
 
-  // const [startRange, setStartRange] = useState({
-  //   chapter: 78,
-  //   verse: 1,
-  // });
-  // const [endRange, setEndRange] = useState({
-  //   chapter: 114,
-  //   verse: 6,
-  // });
+  const handleClickStart = () => {
+    setShowStartAyahs(true);
+  };
+
+  const handleClickEnd = () => {
+    setShowEndAyahs(true);
+  };
 
   const [startRangeAyahList, setStartRangeAyahList] = useState([]);
   const [endRangeAyahList, setEndRangeAyahList] = useState([]);
-
-  const [juz, setJuz] = useState(30);
-  // const [metaData, setMetaData] = useState();
-  // const [chapters, setChapters] = useState([]);
-  // const [juzs, setJuzs] = useState();
-
-  // const getMetaData = async () => {
-  //   const reqMeta =
-  //     "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/info.json";
-  //   axios
-  //     .get(reqMeta)
-  //     .then((response) => {
-  //       setChapters(response.data.chapters);
-  //       setMetaData(response.data);
-  //       setJuzs(response.data.juzs.references);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getMetaData();
-  // }, []);
-
+  const [juz, setJuz] = useState("");
   useEffect(() => {
     const link =
       "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/info.json";
@@ -106,7 +83,6 @@ function SelectRange({
     const value = event.target.value;
     if (value > endRange.chapter) {
       alert("Select a value lesser than end range");
-      return;
     } else {
       updateStartRange({ chapter: value, verse: 1 });
     }
@@ -116,7 +92,6 @@ function SelectRange({
     const value = event.target.value;
     if (startRange.chapter > value) {
       alert("Select a value greater than start range");
-      return;
     } else {
       updateEndRange({ chapter: value, verse: 1 });
     }
@@ -137,6 +112,8 @@ function SelectRange({
     updateStartRange(juzObject.start);
     updateEndRange(juzObject.end);
     setJuz(juzSelected);
+    setShowStartAyahs(true);
+    setShowEndAyahs(true);
   };
 
   const handleClickOpen = () => {
@@ -184,44 +161,50 @@ function SelectRange({
               >
                 {chapters.map((chapter) => {
                   return (
-                    <MenuItem key={chapter.chapter} value={chapter.chapter}>
+                    <MenuItem
+                      onClick={handleClickStart}
+                      key={chapter.chapter}
+                      value={chapter.chapter}
+                    >
                       {chapter.chapter}
                     </MenuItem>
                   );
                 })}
               </Select>
-              <SelectAyah sx={{ m: 1 }} variant="filled">
-                <InputLabel
-                  id="input-label-start-range-ayah"
-                  variant="filled"
-                  sx={{ fontSize: "10px" }}
-                >
-                  Select Ayah
-                </InputLabel>
-                <Select
-                  value={startRange.verse}
-                  label="AyahList"
-                  onChange={handleSelectStartRangeAyah}
-                  MenuProps={{
-                    style: {
-                      maxHeight: 175,
-                    },
-                  }}
-                  // disabled={ayahList.length === 0}
-                >
-                  {startRangeAyahList.map((ayah) => {
-                    return (
-                      <MenuItem key={ayah.verse} value={ayah.verse}>
-                        {ayah.verse}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </SelectAyah>
+              {showStartAyahs && (
+                <SelectAyah sx={{ m: 1 }} variant="filled">
+                  <InputLabel
+                    id="input-label-start-range-ayah"
+                    variant="filled"
+                    sx={{ fontSize: "10px" }}
+                  >
+                    Select Ayah
+                  </InputLabel>
+                  <Select
+                    value={startRange.verse}
+                    label="AyahList"
+                    onChange={handleSelectStartRangeAyah}
+                    MenuProps={{
+                      style: {
+                        maxHeight: 175,
+                      },
+                    }}
+                  >
+                    {startRangeAyahList.map((ayah) => {
+                      return (
+                        <MenuItem key={ayah.verse} value={ayah.verse}>
+                          {ayah.verse}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </SelectAyah>
+              )}
             </Bounds>
             <Bounds sx={{ m: 1, minWidth: 120 }}>
               <InputLabel id="input-label-end-range">End Range</InputLabel>
               <Select
+                onClick={handleClickEnd}
                 value={endRange.chapter}
                 label="EndRangeChapter"
                 onChange={handleEndRangeChapter}
@@ -239,34 +222,35 @@ function SelectRange({
                   );
                 })}
               </Select>
-              <SelectAyah sx={{ m: 1 }} variant="filled">
-                <InputLabel
-                  id="input-label-end-range-ayah"
-                  variant="filled"
-                  sx={{ fontSize: "10px" }}
-                >
-                  Select Ayah
-                </InputLabel>
-                <Select
-                  value={endRange.verse}
-                  label="AyahList"
-                  onChange={handleSelectEndRangeAyah}
-                  MenuProps={{
-                    style: {
-                      maxHeight: 175,
-                    },
-                  }}
-                  // disabled={ayahList.length === 0}
-                >
-                  {endRangeAyahList.map((ayah) => {
-                    return (
-                      <MenuItem key={ayah.verse} value={ayah.verse}>
-                        {ayah.verse}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </SelectAyah>
+              {showEndAyahs && (
+                <SelectAyah sx={{ m: 1 }} variant="filled">
+                  <InputLabel
+                    id="input-label-end-range-ayah"
+                    variant="filled"
+                    sx={{ fontSize: "10px" }}
+                  >
+                    Select Ayah
+                  </InputLabel>
+                  <Select
+                    value={endRange.verse}
+                    label="AyahList"
+                    onChange={handleSelectEndRangeAyah}
+                    MenuProps={{
+                      style: {
+                        maxHeight: 175,
+                      },
+                    }}
+                  >
+                    {endRangeAyahList.map((ayah, index) => {
+                      return (
+                        <MenuItem key={ayah.verse} value={ayah.verse}>
+                          {ayah.verse}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </SelectAyah>
+              )}
             </Bounds>
           </Box>
           <Box
